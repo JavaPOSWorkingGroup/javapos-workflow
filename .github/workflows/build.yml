@@ -26,7 +26,7 @@ jobs:
            java-version: 8
            java-package: jdk
            cache: 'gradle'
-      - name: Build
+      - name: Gradle Build
         uses: gradle/gradle-build-action@v2
         with:
            arguments: |
@@ -41,7 +41,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
         with: 
           arguments: |
-             -Pgithub.event.action=${{github.event.action}}
+             -Pgithub.event.action=${{inputs.github-event-action}}
              --scan
              signMavenJavaPublication
       - name: Store Dependency Report
