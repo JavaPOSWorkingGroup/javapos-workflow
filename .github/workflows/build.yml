@@ -4,8 +4,12 @@ on:
   workflow_call:
     inputs:
       github-event-action:
-        required: true
         type: string
+        required: true
+      has-junit-tests:
+        type: string
+        default: true
+        required: false
     secrets:
       GPG_SIGNING_KEY:
         required: true
@@ -51,16 +55,18 @@ jobs:
           path: "**/build/reports/project/dependencies.txt"
       - name: Store HTML test report
         uses: actions/upload-artifact@v3
+        if: {{ inputs.has-junit-tests}}
         with:
           name: test-report-html
           path: "**/reports/tests/"
       - name: Store XML test report
         uses: actions/upload-artifact@v3
+        if: {{ inputs.has-junit-tests}}
         with:
           name: test-results-xml
           path: "**/test-results/"
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
+        if: {{ always() && inputs.has-junit-tests}}
         with:
           junit_files: "**/test-results/**/*.xml"
