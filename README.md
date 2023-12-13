@@ -12,19 +12,19 @@ The development process for adapting to a new UnifiedPOS version is as follows:
     - [javapos-controls/build.gradle](https://github.com/JavaPOSWorkingGroup/javapos-controls/tree/master/build.gradle)
     - [javapos/build.gradle](https://github.com/JavaPOSWorkingGroup/javapos/tree/master/build.gradle)
 1. Add new category types as control interface types respectively new properties and new method to those control interface types at [javapos-contracts/src/main/java/jpos](https://github.com/JavaPOSWorkingGroup/javapos-contracts/tree/master/src/main/java/jpos)
-1. Publish the javapos-contracts library as pre-release on GitHub to [Maven Central](https://oss.sonatype.org/)'s snapshot repository ("-SNAPSHOT" suffix required!).
+1. Publish the javapos-contracts library as pre-release on GitHub. This will trigger an Gradle build via GitHub Action which publishes the snapshot library ("-SNAPSHOT" suffix required!) to [Maven Central](https://oss.sonatype.org/)'s snapshot repository.
 1. Run the [Xtend](https://www.eclipse.org/xtend/) based code generator from [javapos-code-generators](https://github.com/JavaPOSWorkingGroup/javapos-code-generators) to generate
     - service interface types at [javapos-contracts/src/main/java/jpos/services](https://github.com/JavaPOSWorkingGroup/javapos-contracts/tree/master/src/main/java/jpos/services)
     - device controls class at [javapos-controls/src/main/java/jpos](https://github.com/JavaPOSWorkingGroup/javapos-controls/tree/master/src/main/java/jpos)
     - device control JUnit tests at [javapos-controls/src/test/java/jpos](https://github.com/JavaPOSWorkingGroup/javapos-controls/tree/master/src/test/java/jpos)
 1. Run the device control JUnit tests just generated.
-1. Publish the javapos-controls library as pre-release on GitHub to [Maven Central](https://oss.sonatype.org/)'s snapshot repository ("-SNAPSHOT" suffix required!).
+1. Publish the javapos-controls library as pre-release on GitHub. This will trigger an Gradle build via GitHub Action which publishes the snapshot library ("-SNAPSHOT" suffix required!) to [Maven Central](https://oss.sonatype.org/)'s snapshot repository.
 1. Check all components are working well at external integration projects.
 1. Publish releases of javapos-contracts and javapos-controls on GitHub (removing the "-SNAPSHOT" suffix at both) to get them published at the corresponding staging repository at [Maven Central (Sonatype)](https://oss.sonatype.org/), check the content (especially the JAR contained MANIFEST and change-log files) and release it at the staging repository (a Nexus repository).
 1. Build the aggregation library at the [javapos](https://github.com/JavaPOSWorkingGroup/javapos) repository by referencing the 2 new released components.
 1. Publish a release of [javapos](https://github.com/JavaPOSWorkingGroup/javapos) to [Maven Central (Sonatype)](https://oss.sonatype.org/)'s staging repository and release it from there after verification.
 
-Note: The component [javapos-config-loader](https://github.com/JavaPOSWorkingGroup/javapos-config-loader) is not UnifiedPOS version related and normally does not need to be adapted in case of a new UnifiedPOS version. However, the same handling needs to be applied before it can be integrated into a new build version of [javapos](https://github.com/JavaPOSWorkingGroup/javapos).
+Note: The component [javapos-config-loader](https://github.com/JavaPOSWorkingGroup/javapos-config-loader) is not UnifiedPOS version related (except, new categories are added) and normally does not need to be adapted in case of a new UnifiedPOS version. However, the same handling needs to be applied before it can be integrated into a new build version of [javapos](https://github.com/JavaPOSWorkingGroup/javapos).
 
 ## Handling of credentials
 
