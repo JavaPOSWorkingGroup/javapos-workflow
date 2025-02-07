@@ -22,7 +22,7 @@ jobs:
            java-package: jdk
            cache: 'gradle'
       - name: Gradle Build
-        uses: gradle/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v3
         with:
            arguments: |
              -Pgithub.event.action=${{inputs.github-event-action}}

@@ -27,7 +27,7 @@ jobs:
            java-package: jdk
            cache: 'gradle'
       - name: Gradle Build
-        uses: gradle/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v3
         with:
            arguments: |
              -Pgithub.event.action=${{inputs.github-event-action}}
@@ -35,7 +35,7 @@ jobs:
              dependencyReport
              build
       - name: Try signing
-        uses: gradle/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v3
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
