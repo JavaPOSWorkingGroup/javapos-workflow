@@ -35,20 +35,13 @@ jobs:
             build-scan-terms-of-use-agree: "yes"
             
       - name: Run Gradle Build
-        run: |
-            ./gradlew
-            -Pgithub.event.action=${{inputs.github-event-action}}
-            dependencyReport
-            build
+        run: ./gradlew -Pgithub.event.action=${{inputs.github-event-action}} dependencyReport build
             
       - name: Try signing
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
-        run: |
-            ./gradlew        	 
-            -Pgithub.event.action=${{inputs.github-event-action}}
-            signMavenJavaPublication
+        run: ./gradlew -Pgithub.event.action=${{inputs.github-event-action}} signMavenJavaPublication
             
       - name: Store Dependency Report
         uses: actions/upload-artifact@v4
