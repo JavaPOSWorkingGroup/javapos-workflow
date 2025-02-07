@@ -26,24 +26,30 @@ jobs:
            java-version: 8
            java-package: jdk
            cache: 'gradle'
+           
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+		with:
+        	build-scan-publish: true
+        	build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+        	build-scan-terms-of-use-agree: "yes"
+        
       - name: Gradle Build
-        uses: gradle/actions/setup-gradle@v3
-        with:
-           arguments: |
+        run: |
+        	 ./gradlew
              -Pgithub.event.action=${{inputs.github-event-action}}
-             --scan
              dependencyReport
              build
+             
       - name: Try signing
-        uses: gradle/actions/setup-gradle@v3
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
-        with: 
-          arguments: |
+        run: |
+        	 ./gradlew        	 
              -Pgithub.event.action=${{inputs.github-event-action}}
-             --scan
              signMavenJavaPublication
+             
       - name: Store Dependency Report
         uses: actions/upload-artifact@v4
         with:
