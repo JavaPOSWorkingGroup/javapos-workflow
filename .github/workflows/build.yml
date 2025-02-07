@@ -18,16 +18,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK 1.8
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
            distribution: adopt
            java-version: 8
            java-package: jdk
            cache: 'gradle'
       - name: Gradle Build
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/setup-gradle@v3
         with:
            arguments: |
              -Pgithub.event.action=${{inputs.github-event-action}}
@@ -35,7 +35,7 @@ jobs:
              dependencyReport
              build
       - name: Try signing
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/setup-gradle@v3
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
@@ -45,18 +45,18 @@ jobs:
              --scan
              signMavenJavaPublication
       - name: Store Dependency Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dependencies
           path: "**/build/reports/project/dependencies.txt"
       - name: Store HTML test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-report-html
           path: "**/reports/tests/"
           if-no-files-found: ignore
       - name: Store XML test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results-xml
           path: "**/test-results/"
