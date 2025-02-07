@@ -29,27 +29,27 @@ jobs:
            
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-		with:
-        	build-scan-publish: true
-        	build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
-        	build-scan-terms-of-use-agree: "yes"
-        
-      - name: Gradle Build
+        with:
+            build-scan-publish: true
+            build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+            build-scan-terms-of-use-agree: "yes"
+            
+      - name: Run Gradle Build
         run: |
-        	 ./gradlew
-             -Pgithub.event.action=${{inputs.github-event-action}}
-             dependencyReport
-             build
-             
+            ./gradlew
+            -Pgithub.event.action=${{inputs.github-event-action}}
+            dependencyReport
+            build
+            
       - name: Try signing
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
         run: |
-        	 ./gradlew        	 
-             -Pgithub.event.action=${{inputs.github-event-action}}
-             signMavenJavaPublication
-             
+            ./gradlew        	 
+            -Pgithub.event.action=${{inputs.github-event-action}}
+            signMavenJavaPublication
+            
       - name: Store Dependency Report
         uses: actions/upload-artifact@v4
         with:
