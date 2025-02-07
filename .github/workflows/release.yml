@@ -32,23 +32,22 @@ jobs:
            java-package: jdk
            cache: 'gradle'
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+            build-scan-publish: true
+            build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+            build-scan-terms-of-use-agree: "yes"
+            
       - name: Release
-        uses: gradle/actions/setup-gradle@v3
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
-        with: 
-          arguments: |
-             -Pgithub.event.action=${{inputs.github-event-action}}
-             --scan
-             dependencyReport
-             test
-             publishToSonatype
-             closeSonatypeStagingRepository
-          # we do not invoke closeAndReleaseSonatypeStagingRepository to allow a last manual check at the Sonatpye staging area
-          # for getting a chance to drop it in case of mistakes or errors 
+        run: ./gradlew -Pgithub.event.action=${{inputs.github-event-action}} dependencyReport test publishToSonatype closeSonatypeStagingRepository
+        # we do not invoke closeAndReleaseSonatypeStagingRepository to allow a last manual check at the Sonatpye staging area
+        # for getting a chance to drop it in case of mistakes or errors 
 
       - name: Store Dependency Report
         uses: actions/upload-artifact@v4
