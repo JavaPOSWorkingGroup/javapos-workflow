@@ -23,6 +23,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK 1.8
         uses: actions/setup-java@v4
         with:
@@ -30,6 +31,7 @@ jobs:
            java-version: 8
            java-package: jdk
            cache: 'gradle'
+
       - name: Release
         uses: gradle/actions/setup-gradle@v3
         env:
@@ -47,23 +49,27 @@ jobs:
              closeSonatypeStagingRepository
           # we do not invoke closeAndReleaseSonatypeStagingRepository to allow a last manual check at the Sonatpye staging area
           # for getting a chance to drop it in case of mistakes or errors 
+
       - name: Store Dependency Report
         uses: actions/upload-artifact@v4
         with:
           name: dependencies
           path: "**/build/reports/project/dependencies.txt"
+
       - name: Store HTML test report
         uses: actions/upload-artifact@v4
         with:
           name: test-report-html
           path: "**/reports/tests/"
           if-no-files-found: ignore
+
       - name: Store XML test report
         uses: actions/upload-artifact@v4
         with:
           name: test-results-xml
           path: "**/test-results/"
           if-no-files-found: ignore
+
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
